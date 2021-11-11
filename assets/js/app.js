@@ -36,5 +36,21 @@ d3.csv("data.csv").then(function (censusData) {
 
     var ylinearscale = d3.scaleLinear()
         .domain([2, d3.max(censusData, d => d.healthcare)])
-        .range([height,0])
+        .range([height, 0])
+
+    // Step 3: Create axes
+
+    var yAxis = d3.axisLeft(yScale);
+    var xAxis = d3.axisBottom(xScale);
+
+    //  Step 4: Append Axes to the chart
+    chartGroup.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(bottomAxis);
+
+  chartGroup.append("g")
+    .call(leftAxis);
+
+
+
 };
