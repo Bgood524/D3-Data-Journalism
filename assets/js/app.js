@@ -51,6 +51,34 @@ d3.csv("data.csv").then(function (censusData) {
   chartGroup.append("g")
     .call(leftAxis);
 
+    // Step 5: Create Circles
+    
+    var circlesobject = chartGroup.selectAll("circle")
+        .data(censusData)
+        .enter()    
+        .append("circle")
+        .attr("cx", d => xlinearscale(d.poverty))
+        .attr("cy", d => ylinearscale(d.healthcare))
+        .attr("r","15")
+        .attr("opacity", ".5")
+        .attr("fill", "blue");
 
+//Step 6 Add labels to circles
+var circleLabels = chartGroup.selectAll(null).data(censusData).enter().append("text");
 
-};
+circleLabels
+  .attr("x", function(d) {
+    return xLinearScale(d.poverty);
+  })
+  .attr("y", function(d) {
+    return yLinearScale(d.healthcare);
+  })
+  .text(function(d) {
+    return d.abbr;
+  })
+  .attr("font-family", "sans-serif")
+  .attr("font-size", "10px")
+  .attr("text-anchor", "middle")
+  .attr("fill", "black");
+
+});
