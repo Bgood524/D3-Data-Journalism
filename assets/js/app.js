@@ -31,7 +31,7 @@ d3.csv("data.csv").then(function (censusData) {
     });
     // Step 2: Create scale functions
     var xlinearscale = d3.scaleLinear()
-        .domain([d3.min(censusData, d => d.poverty) * .9, d3.max(censusData, d.poverty) * 1.1])
+        .domain([d3.min(censusData, d => d.poverty)*.9, d3.max(censusData, d => d.poverty)*1.1])
         .range([0, width])
 
     var ylinearscale = d3.scaleLinear()
@@ -40,16 +40,16 @@ d3.csv("data.csv").then(function (censusData) {
 
     // Step 3: Create axes
 
-    var yAxis = d3.axisLeft(yScale);
-    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(ylinearscale);
+    var xAxis = d3.axisBottom(xlinearscale);
 
     //  Step 4: Append Axes to the chart
     chartGroup.append("g")
     .attr("transform", `translate(0, ${height})`)
-    .call(bottomAxis);
+    .call(xAxis);
 
   chartGroup.append("g")
-    .call(leftAxis);
+    .call(yAxis);
 
     // Step 5: Create Circles
     
@@ -68,10 +68,10 @@ var circleLabels = chartGroup.selectAll(null).data(censusData).enter().append("t
 
 circleLabels
   .attr("x", function(d) {
-    return xLinearScale(d.poverty);
+    return xlinearscale(d.poverty);
   })
   .attr("y", function(d) {
-    return yLinearScale(d.healthcare);
+    return ylinearscale(d.healthcare);
   })
   .text(function(d) {
     return d.abbr;
@@ -81,4 +81,6 @@ circleLabels
   .attr("text-anchor", "middle")
   .attr("fill", "black");
 
+}).catch(function(error) {
+    console.log(error);
 });
